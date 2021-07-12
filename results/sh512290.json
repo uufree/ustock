@@ -1,0 +1,114 @@
+{
+  "result": [
+    {
+      "init_money": "10000.000",
+      "final_money": "9929.432",
+      "buy_count": "4900.000",
+      "buy_price": "2.015",
+      "buy_time": "2021-06-11 13:15:00",
+      "sell_price": "2.001",
+      "sell_time": "2021-06-15 09:35:00",
+      "profit_money": "-70.568",
+      "profit_ratio": "-0.007"
+    },
+    {
+      "init_money": "9929.432",
+      "final_money": "9993.744",
+      "buy_count": "5100.000",
+      "buy_price": "1.943",
+      "buy_time": "2021-06-18 09:45:00",
+      "sell_price": "1.956",
+      "sell_time": "2021-06-21 11:25:00",
+      "profit_money": "64.312",
+      "profit_ratio": "0.006"
+    },
+    {
+      "init_money": "9993.744",
+      "final_money": "9936.781",
+      "buy_count": "5000.000",
+      "buy_price": "1.968",
+      "buy_time": "2021-06-21 14:50:00",
+      "sell_price": "1.957",
+      "sell_time": "2021-06-22 09:50:00",
+      "profit_money": "-56.962",
+      "profit_ratio": "-0.006"
+    },
+    {
+      "init_money": "9936.781",
+      "final_money": "9919.804",
+      "buy_count": "5000.000",
+      "buy_price": "1.979",
+      "buy_time": "2021-06-22 13:20:00",
+      "sell_price": "1.976",
+      "sell_time": "2021-06-23 09:50:00",
+      "profit_money": "-16.978",
+      "profit_ratio": "-0.002"
+    },
+    {
+      "init_money": "9919.804",
+      "final_money": "9837.831",
+      "buy_count": "5000.000",
+      "buy_price": "1.981",
+      "buy_time": "2021-06-23 10:20:00",
+      "sell_price": "1.965",
+      "sell_time": "2021-06-24 09:35:00",
+      "profit_money": "-81.973",
+      "profit_ratio": "-0.008"
+    },
+    {
+      "init_money": "9837.831",
+      "final_money": "10120.839",
+      "buy_count": "5000.000",
+      "buy_price": "1.963",
+      "buy_time": "2021-06-25 10:00:00",
+      "sell_price": "2.020",
+      "sell_time": "2021-06-29 10:05:00",
+      "profit_money": "283.008",
+      "profit_ratio": "0.029"
+    },
+    {
+      "init_money": "10120.839",
+      "final_money": "10168.827",
+      "buy_count": "5000.000",
+      "buy_price": "2.007",
+      "buy_time": "2021-06-30 13:20:00",
+      "sell_price": "2.017",
+      "sell_time": "2021-07-01 09:35:00",
+      "profit_money": "47.988",
+      "profit_ratio": "0.005"
+    },
+    {
+      "init_money": "10168.827",
+      "final_money": "9956.815",
+      "buy_count": "5000.000",
+      "buy_price": "2.033",
+      "buy_time": "2021-07-01 10:05:00",
+      "sell_price": "1.991",
+      "sell_time": "2021-07-02 09:35:00",
+      "profit_money": "-212.012",
+      "profit_ratio": "-0.021"
+    },
+    {
+      "init_money": "9956.815",
+      "final_money": "10092.540",
+      "buy_count": "5100.000",
+      "buy_price": "1.923",
+      "buy_time": "2021-07-06 14:55:00",
+      "sell_price": "1.950",
+      "sell_time": "2021-07-07 14:55:00",
+      "profit_money": "135.725",
+      "profit_ratio": "0.014"
+    },
+    {
+      "init_money": "10092.540",
+      "final_money": "10376.512",
+      "buy_count": "5200.000",
+      "buy_price": "1.922",
+      "buy_time": "2021-07-09 13:50:00",
+      "sell_price": "1.977",
+      "sell_time": "2021-07-12 13:50:00",
+      "profit_money": "283.973",
+      "profit_ratio": "0.028"
+    }
+  ]
+}

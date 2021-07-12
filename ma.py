@@ -18,15 +18,18 @@ if __name__ == "__main__":
     if len(config_content) == 0:
         logging.critical("read config.json failed, please check")
 
-    content = ""
-    with open("data/sh512690.json", "r") as f:
-        content = f.read()
-    offspm = OfflineStockPriceManager(content)
-    onspm = None
+    config = json.loads(config_content)
 
-    ma_strategy = MaStrategyA(10000.0, offspm, onspm)
-    ma_strategy.run_offline_mode()
-    result = ma_strategy.serialize()
-    with open("results/sh512690.txt", "w") as f:
-        f.write(result)
+    for stock in config["stocks"]:
+        content = ""
+        with open("data/{}.json".format(stock["code"]), "r") as f:
+            content = f.read()
+        offspm = OfflineStockPriceManager(content)
+        onspm = None
+
+        ma_strategy = MaStrategyA(10000.0, offspm, onspm)
+        ma_strategy.run_offline_mode()
+        result = ma_strategy.serialize()
+        with open("results/{}.json".format(stock["code"]), "w") as f:
+            f.write(json.dumps(result))
 

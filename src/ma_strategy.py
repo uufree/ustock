@@ -88,7 +88,7 @@ class TradePair:
             "profit_money": format(self.profit_money, ".3f"),
             "profit_ratio": format(self.profit_ratio, ".3f")
         }
-        return json.dumps(data)
+        return data
 
 class MaStrategyA:
     MA10 = {}
@@ -130,7 +130,7 @@ class MaStrategyA:
             if str(day).find("15:00:00") == True:
                 continue
 
-            logging.info("ma10: %f, ma20: %f, ma30: %f", self.MA10.average(), self.MA20.average(), self.MA30.average())
+            logging.info("time: %s, ma10: %f, ma20: %f, ma30: %f", day, self.MA10.average(), self.MA20.average(), self.MA30.average())
 
             if self.current_trade_pair == None and self.check_buy_cond():
                 self.current_trade_pair = TradePair(self.money)
@@ -153,11 +153,10 @@ class MaStrategyA:
         return not self.check_buy_cond()
 
     def serialize(self):
-        content = ""
+        array = []
         for trade_pair in self.history_trade_pair_list:
-            content += trade_pair.serialize()
-            content += "\n"
-        return content
+            array.append(trade_pair.serialize())
+        return {"result": array}
 
     def run_online_mode(self):
         pass
