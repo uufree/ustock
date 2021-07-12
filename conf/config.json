@@ -1,0 +1,103 @@
+{
+  "data": {
+    "resource": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol={}&scale={}&ma=no&datalen={}"
+  },
+  "offline": {
+    "scale": 5,
+    "len": 1024
+  },
+  "online": {
+    "scale": 5,
+    "len": 36
+  },
+  "stocks": [
+    {
+      "code": "sh512690",
+      "name": "酒ETF"
+    },
+    {
+      "code": "sz159928",
+      "name": "消费ETF"
+    },
+    {
+      "code": "sh512010",
+      "name": "医药ETF"
+    },
+    {
+      "code": "sh512170",
+      "name": "医疗ETF"
+    },
+    {
+      "code": "sh515030",
+      "name": "新能源车ETF"
+    },
+    {
+      "code": "sh515790",
+      "name": "光伏ETF"
+    },
+    {
+      "code": "sh516110",
+      "name": "汽车ETF"
+    },
+    {
+      "code": "sz159992",
+      "name": "创新药ETF"
+    },
+    {
+      "code": "sh512290",
+      "name": "生物医药ETF"
+    },
+    {
+      "code": "sz159996",
+      "name": "家电ETF"
+    },
+    {
+      "code": "sz159997",
+      "name": "电子ETF"
+    },
+    {
+      "code": "sh512480",
+      "name": "半导体ETF"
+    },
+    {
+      "code": "sz159995",
+      "name": "芯片ETF"
+    },
+    {
+      "code": "sz159852",
+      "name": "软件ETF"
+    },
+    {
+      "code": "sh512880",
+      "name": "证券ETF"
+    },
+    {
+      "code": "sh515050",
+      "name": "5GETF"
+    },
+    {
+      "code": "sh512660",
+      "name": "军工ETF"
+    },
+    {
+      "code": "sz159870",
+      "name": "化工ETF"
+    },
+    {
+      "code": "sh512400",
+      "name": "有色金属ETF"
+    },
+    {
+      "code": "sh516780",
+      "name": "稀土ETF"
+    },
+    {
+      "code": "sh515220",
+      "name": "煤炭ETF"
+    },
+    {
+      "code": "sh515210",
+      "name": "钢铁ETF"
+    }
+  ]
+}
