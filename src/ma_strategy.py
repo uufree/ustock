@@ -3,6 +3,7 @@
 
 import logging
 import json
+import time
 
 class MA:
     price_list = []
@@ -34,6 +35,7 @@ class MA:
         return float(format(sum / self.length, ".3f"))
 
 class TradePair:
+    peroid = 0
     init_money = 0.0
     money = 0.0
     buy_count = 0
@@ -49,6 +51,12 @@ class TradePair:
     def __init__(self, money):
         self.money = money
         self.init_money = money
+
+    def update_peroid(self):
+        self.peroid += 1
+
+    def get_peroid(self):
+        return self.peroid
 
     def set_buy_info(self, buy_time, buy_price):
         self.buy_time = buy_time
@@ -76,8 +84,9 @@ class TradePair:
     def get_money(self):
         return self.money
 
-    def serialize(self):
+    def serialize(self, signal):
         data = {
+            "signal": signal,
             "init_money": format(self.init_money, ".3f"),
             "final_money": format(self.money, ".3f"),
             "buy_count": format(self.buy_count, ".3f"),
@@ -91,6 +100,9 @@ class TradePair:
         return data
 
 class MaStrategyA:
+    code = ""
+    name = ""
+    idle = 0
     MA10 = {}
     MA20 = {}
     MA30 = {}
@@ -100,8 +112,12 @@ class MaStrategyA:
     current_trade_pair = None
     history_trade_pair_list = []
     money = 0
+    # debug
+    last_time = ""
 
-    def __init__(self, money, offspm, onspm):
+    def __init__(self, code, name, money, offspm, onspm):
+        self.code = code
+        self.name = name
         self.offline_spm = offspm
         self.online_spm = onspm
         self.MA10 = MA(10)
@@ -118,6 +134,9 @@ class MaStrategyA:
                 logging.info("read offline data finished.")
                 break
 
+            # update last time
+            self.last_time = day
+
             self.MA10.add(price)
             self.MA20.add(price)
             self.MA30.add(price)
@@ -132,17 +151,42 @@ class MaStrategyA:
 
             logging.info("time: %s, ma10: %f, ma20: %f, ma30: %f", day, self.MA10.average(), self.MA20.average(), self.MA30.average())
 
-            if self.current_trade_pair == None and self.check_buy_cond():
-                self.current_trade_pair = TradePair(self.money)
-                self.current_trade_pair.set_buy_info(day, price)
+            # 未持仓
+            if self.current_trade_pair == None:
+                if self.check_buy_cond():
+                    self.current_trade_pair = TradePair(self.money)
+                    self.current_trade_pair.set_buy_info(day, price)
+                    self.current_trade_pair.update_peroid()
+                    self.idle = 0
+                else:
+                    self.idle += 1
                 continue
 
-            if self.current_trade_pair != None and self.check_sell_cond() and self.current_trade_pair.check_sell_cond(day):
-                self.current_trade_pair.set_sell_info(day, price)
-                self.history_trade_pair_list.append(self.current_trade_pair)
-                self.money = self.current_trade_pair.money
-                self.current_trade_pair = None
+            # 持仓
+            if self.current_trade_pair != None:
+                if self.check_sell_cond() and self.current_trade_pair.check_sell_cond(day):
+                    self.current_trade_pair.set_sell_info(day, price)
+                    self.history_trade_pair_list.append(self.current_trade_pair)
+                    self.money = self.current_trade_pair.money
+                    self.current_trade_pair = None
+                    self.idle = 1
+                else:
+                    self.current_trade_pair.update_peroid()
+                    self.idle = 0
                 continue
+
+
+    def has_buy_signal(self):
+        return self.current_trade_pair != None and self.current_trade_pair.get_peroid() == 1
+
+    def get_buy_info(self):
+        return self.current_trade_pair.serialize("BUY")
+
+    def has_sell_signal(self):
+        return self.current_trade_pair == None and self.idle == 1
+
+    def get_sell_info(self):
+        return self.history_trade_pair_list[-1].serialize("SELL")
 
     def check_buy_cond(self):
         if self.MA10.average() > self.MA20.average() and self.MA20.average() > self.MA30.average():
@@ -155,9 +199,8 @@ class MaStrategyA:
     def serialize(self):
         array = []
         for trade_pair in self.history_trade_pair_list:
-            array.append(trade_pair.serialize())
+            array.append(trade_pair.serialize(""))
         return {"result": array}
 
     def run_online_mode(self):
         pass
-

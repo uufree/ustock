@@ -6,8 +6,10 @@ import json
 class OfflineStockPriceManager:
     price_list = []
 
-    def __init__(self, content):
+    def __init__(self, content, low = 0, high = 0):
         self.price_list = json.loads(content)
+        if low < high:
+            self.price_list = self.price_list[low:high]
         self.price_list.reverse()
 
     def get_price(self):
