@@ -145,10 +145,6 @@ class MaStrategyA:
             if (not self.MA10.valid()) or (not self.MA20.valid()) or (not self.MA30.valid()):
                 continue
 
-            # 跳过15:00
-            if str(day).find("15:00:00") == True:
-                continue
-
             logging.info("time: %s, ma10: %f, ma20: %f, ma30: %f", day, self.MA10.average(), self.MA20.average(), self.MA30.average())
 
             # 未持仓

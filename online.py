@@ -2,10 +2,10 @@
 # coding=utf-8
 
 import logging
+import datetime
 from src.ma_strategy import *
 from src.stock_price_manager import *
-
-NOTIFY = True
+from utils.email import *
 
 if __name__ == "__main__":
     # init log format
@@ -17,6 +17,11 @@ if __name__ == "__main__":
     now = time.localtime(time.time())
     hour = now.tm_hour
     minute = now.tm_min
+    weekday = datetime.datetime.now().weekday()
+    if weekday > 4:
+        logging.info("not trade time...")
+        exit(0)
+
     if hour < 9 or hour >= 15:
         logging.info("not trade time...")
         exit(0)
@@ -38,7 +43,16 @@ if __name__ == "__main__":
     if len(config_content) == 0:
         logging.critical("read config.json failed, please check")
 
+    email_config_content = ""
+    with open("conf/email.json", 'r') as f:
+        email_config_content = f.read()
+
+    if len(email_config_content) == 0:
+        logging.critical("read email config failed, please check")
+
     config = json.loads(config_content)
+    email_config = json.loads(email_config_content)
+
     scale = config["online"]["scale"]
     len = config["online"]["len"]
     resource = config["data"]["resource"]
@@ -56,12 +70,25 @@ if __name__ == "__main__":
         ma_strategy.run(online_spm)
         ma_strategy_collection[stock["code"]] = ma_strategy
 
-    if NOTIFY:
-        results = []
+    if config["data"]["notify"]:
+        sell_list = []
+        buy_list = []
         for code, ma in ma_strategy_collection.items():
             if ma.has_buy_signal():
-                results.append(ma.get_brief_buy_info())
+                buy_list.append(ma.get_brief_buy_info())
             if ma.has_sell_signal():
-                results.append(ma.get_brief_sell_info())
-        with open("./results.json", "w", encoding='utf-8') as f:
-            f.write(json.dumps(results, ensure_ascii=False))
+                sell_list.append(ma.get_brief_sell_info())
+
+        if len(buy_list) == 0 and len(sell_list) == 0:
+            exit(0)
+
+        subject = ""
+        for buy in buy_list:
+            subject += "BUY {} ({})".format(buy.name, buy.code)
+            subject += " || "
+        for sell in sell_list:
+            subject += "SELL {} ({})".format(sell.name, sell.code)
+            subject += " || "
+        send_mail(email_config["host"], email_config["port"],
+                  email_config["user"], email_config["password"],
+                  email_config["to_address"], subject, "")

@@ -49,8 +49,6 @@ class OnlineStockPriceManager:
             if minute == aim_minute:
                 break
             logging.info("drop imcomplete record: %s", self.price_list.pop()["day"])
-
-        self.price_list.pop()
         self.price_list.reverse()
 
     def get_price(self):

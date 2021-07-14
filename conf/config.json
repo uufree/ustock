@@ -1,6 +1,9 @@
 {
   "data": {
-    "resource": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol={}&scale={}&ma=no&datalen={}"
+    "email_notify": true,
+    "save_record": false,
+    "resource": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol={}&scale={}&ma=no&datalen={}",
+    "offline_record_path": "/data/records.txt"
   },
   "offline": {
     "scale": 5,
