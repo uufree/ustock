@@ -43,12 +43,13 @@ if __name__ == "__main__":
     len = config["online"]["len"]
     resource = config["data"]["resource"]
 
+    aim_minute = minute - 1
     ma_strategy_collection = {}
     for stock in config["stocks"]:
         time.sleep(2)
         url = resource.format(stock["code"], scale, len)
         path = "data/{}.json".format(stock["code"])
-        online_spm = OnlineStockPriceManager(url, path)
+        online_spm = OnlineStockPriceManager(url, aim_minute, path)
         logging.info("%s get data success", stock["name"])
 
         ma_strategy = MaStrategyA(stock["code"], stock["name"])
@@ -59,8 +60,8 @@ if __name__ == "__main__":
         results = []
         for code, ma in ma_strategy_collection.items():
             if ma.has_buy_signal():
-                results.append(ma.get_buy_info())
+                results.append(ma.get_brief_buy_info())
             if ma.has_sell_signal():
-                results.append(ma.get_sell_info())
+                results.append(ma.get_brief_sell_info())
         with open("./results.json", "w", encoding='utf-8') as f:
             f.write(json.dumps(results, ensure_ascii=False))

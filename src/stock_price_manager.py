@@ -4,6 +4,7 @@
 import json
 import requests
 import logging
+import time
 
 class OfflineStockPriceManager:
     price_list = []
@@ -23,7 +24,7 @@ class OfflineStockPriceManager:
 class OnlineStockPriceManager:
     price_list = []
 
-    def __init__(self, url, save_path=""):
+    def __init__(self, url, aim_minute, save_path=""):
         while True:
             try:
                 response = requests.get(url, timeout=5)
@@ -43,6 +44,12 @@ class OnlineStockPriceManager:
             break
 
         # 丢弃不完整的数据
+        while True:
+            minute = time.strptime(self.price_list[-1]["day"], "%Y-%m-%d %H:%M:%S").tm_min
+            if minute == aim_minute:
+                break
+            logging.info("drop imcomplete record: %s", self.price_list.pop()["day"])
+
         self.price_list.pop()
         self.price_list.reverse()
 

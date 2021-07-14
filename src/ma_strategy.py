@@ -179,6 +179,12 @@ class MaStrategyA:
     def has_buy_signal(self):
         return self.current_trade_pair != None and self.current_trade_pair.get_peroid() == 1
 
+    def get_brief_buy_info(self):
+        return {"signal": "BUY", "code": self.code, "name": self.name}
+
+    def get_brief_sell_info(self):
+        return {"signal": "SELL", "code": self.code, "name": self.name}
+
     def get_buy_info(self):
         return self.current_trade_pair.serialize("BUY", self.code, self.name)
 
