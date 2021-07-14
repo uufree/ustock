@@ -27,11 +27,17 @@ if __name__ == "__main__":
     for stock in config["stocks"]:
         url = resource_url.format(stock["code"], scale, len)
         path = "data/{}.json".format(stock["code"])
-        response = requests.get(url)
+        try:
+            response = requests.get(url, timeout=5)
+        except requests.exceptions.RequestException as e:
+            logging.error(e)
+            continue
+
         if response.status_code != 200:
-            logging.critical("get data from sina failed, status code: %d", response.status_code)
+            logging.error("get data from sina failed, status code: %d", response.status_code)
+            continue
 
         with open(path, "w", encoding='utf-8') as f:
             f.write(response.text)
         logging.info("update data success, code: %s, name: %s", stock["code"], stock["name"])
-        time.sleep(2)
+        time.sleep(3)

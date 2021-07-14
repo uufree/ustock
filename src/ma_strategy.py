@@ -84,9 +84,11 @@ class TradePair:
     def get_money(self):
         return self.money
 
-    def serialize(self, signal):
+    def serialize(self, signal, code, name):
         data = {
             "signal": signal,
+            "code": code,
+            "name": name,
             "init_money": format(self.init_money, ".3f"),
             "final_money": format(self.money, ".3f"),
             "buy_count": format(self.buy_count, ".3f"),
@@ -115,11 +117,9 @@ class MaStrategyA:
     # debug
     last_time = ""
 
-    def __init__(self, code, name, money, offspm, onspm):
+    def __init__(self, code, name, money=10000):
         self.code = code
         self.name = name
-        self.offline_spm = offspm
-        self.online_spm = onspm
         self.MA10 = MA(10)
         self.MA20 = MA(20)
         self.MA30 = MA(30)
@@ -127,9 +127,9 @@ class MaStrategyA:
         self.history_trade_pair_list = []
         self.money = money
 
-    def run_offline_mode(self):
+    def run(self, spm):
         while True:
-            price, day = self.offline_spm.get_price()
+            price, day = spm.get_price()
             if price == -1 or day == "":
                 logging.info("read offline data finished.")
                 break
@@ -180,13 +180,13 @@ class MaStrategyA:
         return self.current_trade_pair != None and self.current_trade_pair.get_peroid() == 1
 
     def get_buy_info(self):
-        return self.current_trade_pair.serialize("BUY")
+        return self.current_trade_pair.serialize("BUY", self.code, self.name)
 
     def has_sell_signal(self):
         return self.current_trade_pair == None and self.idle == 1
 
     def get_sell_info(self):
-        return self.history_trade_pair_list[-1].serialize("SELL")
+        return self.history_trade_pair_list[-1].serialize("SELL", self.code, self.name)
 
     def check_buy_cond(self):
         if self.MA10.average() > self.MA20.average() and self.MA20.average() > self.MA30.average():
